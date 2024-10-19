@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {Photo, UserPhoto} from '../types';
-import {deletePhoto, fetchAllPhotos, fetchUserPhotos} from './photosThunks';
+import {createPhoto, deletePhoto, fetchAllPhotos, fetchUserPhotos} from './photosThunks';
 
 export interface PhotosState {
   photos: Photo[];
@@ -8,6 +8,7 @@ export interface PhotosState {
   usersPhotoLoading: boolean;
   fetchAllLoading: boolean;
   deletePhotoLoading: false | string;
+  createLoading: boolean;
 }
 
 const initialState: PhotosState = {
@@ -16,6 +17,7 @@ const initialState: PhotosState = {
   usersPhotoLoading: false,
   fetchAllLoading: false,
   deletePhotoLoading: false,
+  createLoading: false,
 };
 
 export const photosSlice = createSlice({
@@ -42,6 +44,14 @@ export const photosSlice = createSlice({
       state.usersPhotoLoading = false;
     });
 
+    builder.addCase(createPhoto.pending, (state: PhotosState) => {
+      state.createLoading = true;
+    }).addCase(createPhoto.fulfilled, (state: PhotosState) => {
+      state.createLoading = false;
+    }).addCase(createPhoto.rejected, (state: PhotosState) => {
+      state.createLoading = false;
+    });
+
     builder.addCase(deletePhoto.pending, (state: PhotosState, {meta: {arg: photo}}) => {
       state.deletePhotoLoading = photo;
     }).addCase(deletePhoto.fulfilled, (state: PhotosState) => {
@@ -56,6 +66,7 @@ export const photosSlice = createSlice({
     selectUsersPhoto: (state: PhotosState) => state.usersPhoto,
     selectUsersPhotoLoading: (state: PhotosState) => state.usersPhotoLoading,
     selectDeletePhotoLoading: (state: PhotosState) => state.deletePhotoLoading,
+    selectCreateLoading: (state: PhotosState) => state.createLoading,
   },
 });
 
@@ -66,4 +77,5 @@ export const {
   selectUsersPhotoLoading,
   selectFetchAllLoading,
   selectDeletePhotoLoading,
+  selectCreateLoading,
 } = photosSlice.selectors;

@@ -26,16 +26,14 @@ const PhotoItem: React.FC<Props> = ({photo}) => {
     setShowModal(false);
   };
 
-  const handleCocktailDelete = async (photoId: string) => {
+  const handlePhotoDelete = async (photoId: string) => {
     try {
       if(window.confirm('Вы точно хотите удалить данное фото?')) {
         await dispatch(deletePhoto(photoId)).unwrap();
         if(location === '/') {
           dispatch(fetchAllPhotos());
         } else {
-          if(user) {
-            dispatch(fetchUserPhotos(id));
-          }
+          dispatch(fetchUserPhotos(id));
         }
         toast.success('Photo successfully delete');
       }
@@ -46,19 +44,23 @@ const PhotoItem: React.FC<Props> = ({photo}) => {
 
   return (
     <>
-      <div className='card'>
+      <div className='card' style={{width: '275px'}}>
         <img src={`${API_URL}/${photo.photo}`} className="card-img-top" alt={photo.title}
-             style={{width: '275px', height: '183px', cursor: 'pointer'}} onClick={() => setShowModal(true)}/>
-        <div className='card-body'>
-          <h5 className='card-title' style={{cursor: 'pointer'}} onClick={() => setShowModal(true)}>{photo.title}</h5>
-          {location === '/' && (
-            <p className='mb-0'>By: <Link to={`/user/${photo.user._id}`}
-                                          className='text-dark text-decoration-none'>{photo.user.displayName}</Link></p>
-          )}
+             style={{height: '183px', cursor: 'pointer'}} onClick={() => setShowModal(true)}/>
+        <div className='card-body d-flex flex-column'>
+          <div className='flex-grow-1'>
+            <h5 className='card-title' style={{cursor: 'pointer'}} onClick={() => setShowModal(true)}>{photo.title}</h5>
+            {location === '/' && (
+              <p className='mb-0'>By: <Link to={`/user/${photo.user._id}`}
+                                            className='text-dark text-decoration-none'>{photo.user.displayName}</Link></p>
+            )}
+          </div>
           {(user?.role === 'admin' || (location !== '/' && user?._id === photo.user._id)) && (
             <div className='d-flex justify-content-center mt-3'>
-              <button type="button" className="btn btn-danger" onClick={() => handleCocktailDelete(photo._id)} disabled={deleteLoading ? deleteLoading === photo._id : false}>{deleteLoading && deleteLoading === photo._id && (
-                <ButtonSpinner/>)}Delete</button>
+              <button type="button" className="btn btn-danger" onClick={() => handlePhotoDelete(photo._id)}
+                      disabled={deleteLoading ? deleteLoading === photo._id : false}>{deleteLoading && deleteLoading === photo._id && (
+                <ButtonSpinner/>)}Delete
+              </button>
             </div>
           )}
         </div>

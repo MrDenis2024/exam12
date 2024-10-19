@@ -50,6 +50,12 @@ export interface UserPhoto {
     _id: string;
     displayName: string;
   }
-  photos: Photo[]
+  photos: Photo[];
 }
+
+export interface PhotoMutation {
+  title: string;
+  photo: File | null;
+}
+
 
