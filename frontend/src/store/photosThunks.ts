@@ -11,3 +11,7 @@ export const fetchUserPhotos = createAsyncThunk<UserPhoto, string>('photos/fetch
   const {data: photos} = await axiosApi.get<UserPhoto>(`/photos?user=${id}`);
   return photos;
 });
+
+export const deletePhoto = createAsyncThunk<void, string>('photos/delete', async (id) => {
+  await axiosApi.delete(`/photos/${id}`);
+});
