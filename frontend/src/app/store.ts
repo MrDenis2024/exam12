@@ -4,7 +4,7 @@ import { persistReducer, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, pers
 import {usersReducer} from '../store/usersSlice';
 
 const usersPersistConfig = {
-  key: 'test:users',
+  key: 'photos:users',
   storage,
   whitelist: ['user'],
 };

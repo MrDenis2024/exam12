@@ -6,7 +6,6 @@ import {RegisterMutation} from '../../types';
 import ButtonSpinner from '../../components/Spinner/ButtonSpinner';
 import {toast} from 'react-toastify';
 import {register} from '../../store/usersThunks';
-import FileInput from '../../components/Forms/FileInput';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -17,7 +16,6 @@ const Register = () => {
     email: '',
     password: '',
     displayName: '',
-    avatar: null,
   });
 
   const getFieldError = (fieldName: string) => {
@@ -26,16 +24,6 @@ const Register = () => {
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const fileInputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = event.target;
-    const value = files && files[0] ? files[0] : null;
-
     setState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -93,7 +81,6 @@ const Register = () => {
           </div>
         )}
       </div>
-      <FileInput onChange={fileInputChangeHandler}/>
       <button type="submit" className="btn btn-primary w-100 mb-3" disabled={loading}>{loading && <ButtonSpinner/>}SIGN
         UP
       </button>

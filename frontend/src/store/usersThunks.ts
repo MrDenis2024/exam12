@@ -6,16 +6,7 @@ import {unsetUser} from './usersSlice';
 
 export const register = createAsyncThunk<User, RegisterMutation, {rejectValue: ValidationError}>('users/register', async (registerMutation, {rejectWithValue}) => {
   try {
-    const formData = new FormData();
-    formData.append('email', registerMutation.email);
-    formData.append('password', registerMutation.password);
-    formData.append('displayName', registerMutation.displayName);
-
-    if(registerMutation.avatar) {
-      formData.append('avatar', registerMutation.avatar);
-    }
-
-    const {data: user} = await axiosApi.post<User>('/users', formData);
+    const {data: user} = await axiosApi.post<User>('/users', registerMutation);
     return user;
   } catch (e) {
     if(isAxiosError(e) && e.response && e.response.status === 400) {
@@ -41,7 +32,7 @@ export const login = createAsyncThunk<User, LoginMutation, {rejectValue: GlobalE
 
 export const googleLogin = createAsyncThunk<User, string, {rejectValue: GlobalError}>('users/googleLogin', async (credential, {rejectWithValue}) => {
   try {
-    const {data: user} = await axiosApi.post<User>('/users/google', credential);
+    const {data: user} = await axiosApi.post<User>('/users/google', {credential});
     return user;
   } catch (e) {
     if(isAxiosError(e) && e.response && e.response.status === 400) {

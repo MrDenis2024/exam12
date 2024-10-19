@@ -21,7 +21,7 @@ const config = {
   rootPath,
   publicPath: path.join(rootPath, 'public'),
   corsOptions,
-  database: 'mongodb://localhost/test',
+  database: 'mongodb://localhost/photos',
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,

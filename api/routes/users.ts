@@ -1,6 +1,5 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import {imagesUpload} from '../multer';
 import User from '../models/User';
 import {OAuth2Client} from 'google-auth-library';
 import config from '../config';
@@ -9,12 +8,11 @@ import {randomUUID} from 'crypto';
 const usersRouter = express.Router();
 const googleClient = new OAuth2Client(config.google.clientId);
 
-usersRouter.post('/', imagesUpload.single('avatar'), async (req, res, next) => {
+usersRouter.post('/', async (req, res, next) => {
   try {
     const user = new User({
       email: req.body.email,
       displayName: req.body.displayName,
-      avatar: req.file?.filename,
       password: req.body.password,
     });
 
@@ -76,7 +74,6 @@ usersRouter.post('/google', async (req, res, next) => {
     const email = payload.email;
     const id = payload.sub;
     const displayName = payload.name;
-    const avatar = payload.picture;
 
     let user = await User.findOne({googleId: id});
 
@@ -86,7 +83,6 @@ usersRouter.post('/google', async (req, res, next) => {
         password: randomUUID(),
         googleId: id,
         displayName,
-        avatar,
       });
     }
 
