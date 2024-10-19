@@ -21,7 +21,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
         Hello, {user.displayName}
       </button>
       <ul className="dropdown-menu">
-        <li><NavLink to="/user/:id" className="dropdown-item">{user.displayName} gallery</NavLink></li>
+        <li><NavLink to="/my-gallery" className="dropdown-item">{user.displayName} gallery</NavLink></li>
         <li><NavLink to='/new-photo' className="dropdown-item">Add new photo</NavLink></li>
         <li>
           <hr className="dropdown-divider"/>

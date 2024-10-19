@@ -10,7 +10,7 @@ const photosRouter = express.Router();
 photosRouter.get('/', async (req, res, next) => {
   try {
     const userId = req.query.user;
-    const photos = await Photo.find(userId ? ({user: userId}) : ({}));
+    const photos = await Photo.find(userId ? ({user: userId}) : ({})).populate('user', 'displayName');
 
     return res.send(photos);
   } catch (error) {
