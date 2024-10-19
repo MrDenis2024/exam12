@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Photo} from '../../types';
 import {API_URL} from '../../constants';
 import Modal from '../Modal/Modal';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 
 interface Props {
   photo: Photo;
@@ -10,6 +10,7 @@ interface Props {
 
 const PhotoItem: React.FC<Props> = ({photo}) => {
   const [showModal, setShowModal] = useState(false);
+  const {pathname: location} = useLocation();
 
   const closeModal = () => {
     setShowModal(false);
@@ -22,8 +23,10 @@ const PhotoItem: React.FC<Props> = ({photo}) => {
              style={{width: '275px', height: '183px', cursor: 'pointer'}} onClick={() => setShowModal(true)}/>
         <div className='card-body'>
           <h5 className='card-title' style={{cursor: 'pointer'}} onClick={() => setShowModal(true)}>{photo.title}</h5>
-          <p className='mb-0'>By: <Link to={`/user/${photo.user._id}`}
-                                        className='text-dark text-decoration-none'>{photo.user.displayName}</Link></p>
+          {location === '/' && (
+            <p className='mb-0'>By: <Link to={`/user/${photo.user._id}`}
+                                          className='text-dark text-decoration-none'>{photo.user.displayName}</Link></p>
+          )}
         </div>
       </div>
       <Modal show={showModal} onClose={() => closeModal()} photo={photo.photo}/>

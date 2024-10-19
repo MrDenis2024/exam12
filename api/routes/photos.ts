@@ -4,6 +4,7 @@ import auth, {RequestWithUser} from '../middleware/auth';
 import {imagesUpload} from '../multer';
 import mongoose from 'mongoose';
 import permit from '../middleware/permit';
+import User from '../models/User';
 
 const photosRouter = express.Router();
 
@@ -12,6 +13,20 @@ photosRouter.get('/', async (req, res, next) => {
     const userId = req.query.user;
     const photos = await Photo.find(userId ? ({user: userId}) : ({})).populate('user', 'displayName');
 
+    if(userId) {
+      const user = await User.findById(userId);
+
+      if(!user) {
+        return res.status(400).send({error: 'User not found'});
+      }
+
+      const response = {
+        user,
+        photos,
+      }
+
+      return res.send(response);
+    }
     return res.send(photos);
   } catch (error) {
     return next(error);

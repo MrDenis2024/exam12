@@ -34,12 +34,22 @@ export interface GlobalError {
   error: string;
 }
 
+
 export interface Photo {
   _id: string;
   user: {
     _id: string;
     displayName: string;
-  };
+  }
   title: string;
   photo: string;
 }
+
+export interface UserPhoto {
+  user: {
+    _id: string;
+    displayName: string;
+  }
+  photos: Photo[]
+}
+
